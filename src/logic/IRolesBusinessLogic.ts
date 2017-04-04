@@ -1,9 +1,16 @@
-import { IBusinessLogic } from 'pip-services-runtime-node';
+export interface IRolesBusinessLogic {
+    getRoles(correlationId: string, userId: string,
+        callback: (err: any, roles: string[]) => void): void;
 
-export interface IRolesBusinessLogic extends IBusinessLogic {
-    getRoles(correlationId: string, userId: string, callback);
-    setRoles(correlationId: string, userId: string, roles: string[], callback);
-    grantRoles(correlationId: string, userId: string, roles: string[], callback);
-    revokeRoles(correlationId: string, userId: string, roles: string[], callback);
-    authorize(correlationId: string, userId: string, roles: string[], callback);
+    setRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    grantRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    revokeRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    authorize(correlationId: string, userId: string, roles: string[],
+        callback: (err: any, authorized: boolean) => void): void;
 }

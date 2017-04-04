@@ -7,9 +7,11 @@ Seneca port and protocol can be specified in the microservice [configuration](Co
 var seneca = require('seneca')();
 
 seneca.client({
-    type: 'tcp', // Microservice seneca protocol
-    localhost: 'localhost', // Microservice localhost
-    port: 8812, // Microservice seneca port
+    connection: {
+        protocol: 'tcp', // Microservice seneca protocol
+        localhost: 'localhost', // Microservice localhost
+        port: 8812, // Microservice seneca port
+    }
 });
 ```
 

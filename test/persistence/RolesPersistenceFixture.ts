@@ -2,29 +2,29 @@ let async = require('async');
 let assert = require('chai').assert;
 
 import { IRolesPersistence } from '../../src/persistence/IRolesPersistence';
+import { UserRolesV1 } from '../../src/data/version1/UserRolesV1';
 
 let ROLES = ['Role 1', 'Role 2', 'Role 3'];
     
 export class RolesPersistenceFixture {
-    private _db: IRolesPersistence;
+    private _persistence: IRolesPersistence;
     
-    constructor(db) {
-        assert.isNotNull(db);
-        this._db = db;
+    constructor(persistence) {
+        assert.isNotNull(persistence);
+        this._persistence = persistence;
     }
 
     testGetAndSetRoles(done) {
         async.series([
         // Set party roles
             (callback) => {
-                this._db.setRoles(
+                this._persistence.set(
                     null,
-                    '1',
-                    ROLES,
+                    new UserRolesV1('1', ROLES),
                     (err, roles) => {
                         assert.isNull(err);
                         
-                        assert.lengthOf(roles, 3);
+                        assert.lengthOf(roles.roles, 3);
 
                         callback();
                     }
@@ -32,13 +32,13 @@ export class RolesPersistenceFixture {
             },
         // Read and check party roles
             (callback) => {
-                this._db.getRoles(
+                this._persistence.getOneById(
                     null,
                     '1',
                     (err, roles) => {
                         assert.isNull(err);
                         
-                        assert.lengthOf(roles, 3);
+                        assert.lengthOf(roles.roles, 3);
 
                         callback();
                     }

@@ -1,59 +1,63 @@
 let _ = require('lodash');
 
-import { DynamicMap } from 'pip-services-runtime-node';
-import { Category } from 'pip-services-runtime-node';
-import { ComponentDescriptor } from 'pip-services-runtime-node';
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { ComponentSet } from 'pip-services-runtime-node';
-import { AbstractController } from 'pip-services-runtime-node';
+import { ConfigParams } from 'pip-services-commons-node';
+import { IConfigurable } from 'pip-services-commons-node';
+import { IReferences } from 'pip-services-commons-node';
+import { Descriptor } from 'pip-services-commons-node';
+import { IReferenceable } from 'pip-services-commons-node';
+import { DependencyResolver } from 'pip-services-commons-node';
+import { ICommandable } from 'pip-services-commons-node';
+import { CommandSet } from 'pip-services-commons-node';
 
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from '../persistence/IRolesPersistence';
 import { IRolesBusinessLogic } from './IRolesBusinessLogic';
 import { RolesCommandSet } from './RolesCommandSet';
 
-export class RolesController extends AbstractController implements IRolesBusinessLogic {
-	/**
-	 * Unique descriptor for the RolesController component
-	 */
-	public static Descriptor: ComponentDescriptor = new ComponentDescriptor(
-		Category.Controllers, "pip-services-roles", "*", "*"
-	);
-    
-	private _db: IRolesPersistence;
-    
-    constructor() {
-        super(RolesController.Descriptor);
+export class RolesController implements IConfigurable, IReferenceable, ICommandable, IRolesBusinessLogic {
+    private static _defaultConfig: ConfigParams = ConfigParams.fromTuples(
+        'dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0'
+    );
+
+    private _dependencyResolver: DependencyResolver = new DependencyResolver(RolesController._defaultConfig);
+    private _persistence: IRolesPersistence;
+    private _commandSet: RolesCommandSet;
+
+    public configure(config: ConfigParams): void {
+        this._dependencyResolver.configure(config);
     }
 
-    public link(components: ComponentSet): void {
-        // Locate reference to tags persistence component
-        this._db = <IRolesPersistence>components.getOneRequired(
-        	new ComponentDescriptor(Category.Persistence, "pip-services-roles", '*', '*')
-    	);
-        
-        super.link(components);
+    public setReferences(references: IReferences): void {
+        this._dependencyResolver.setReferences(references);
+        this._persistence = this._dependencyResolver.getOneRequired<IRolesPersistence>('persistence');
+    }
 
-        // Add commands
-        let commands = new RolesCommandSet(this);
-        this.addCommandSet(commands);
+    public getCommandSet(): CommandSet {
+        if (this._commandSet == null)
+            this._commandSet = new RolesCommandSet(this);
+        return this._commandSet;
     }
     
-    public getRoles(correlationId: string, userId: string, callback) {
-        callback = this.instrument(correlationId, 'roles.get_roles', callback);
-        this._db.getRoles(correlationId, userId, callback);
+    public getRoles(correlationId: string, userId: string,
+        callback: (err: any, roles: string[]) => void): void {
+        this._persistence.getOneById(correlationId, userId, (err, roles) => {
+            callback(err, roles ? roles.roles : null);
+        });
     }
 
-    public setRoles(correlationId: string, userId: string, roles: string[], callback) {
-        callback = this.instrument(correlationId, 'roles.set_roles', callback);
-        this._db.setRoles(correlationId, userId, roles, callback);
+    public setRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void {
+        let item = new UserRolesV1(userId, roles);
+        this._persistence.set(correlationId, item, (err, roles) => {
+            if (callback) callback(err, roles ? roles.roles : null);
+        });
     }
 
-    public grantRoles(correlationId: string, userId: string, roles: string[], callback) {
-        callback = this.instrument(correlationId, 'roles.grant_role', callback);
-
+    public grantRoles(correlationId: string, userId: string, roles: string[],
+        callback: (err: any, roles: string[]) => void): void {
         // If there are no roles then skip processing
         if (roles.length == 0) {
-            if (callback) callback();
+            if (callback) callback(null, null);
             return;
         }
 
@@ -62,7 +66,7 @@ export class RolesController extends AbstractController implements IRolesBusines
             userId,
             (err, existingRoles) => {
                 if (err) {
-                    callback(err);
+                    callback(err, null);
                     return;
                 }
 
@@ -78,12 +82,11 @@ export class RolesController extends AbstractController implements IRolesBusines
         );
     }
 
-    public revokeRoles(correlationId: string, userId: string, roles: string[], callback) {
-        callback = this.instrument(correlationId, 'roles.revoke_role', callback);
-
+    public revokeRoles(correlationId: string, userId: string, roles: string[],
+        callback: (err: any, roles: string[]) => void): void {
         // If there are no roles then skip processing
         if (roles.length == 0) {
-            if (callback) callback();
+            if (callback) callback(null, null);
             return;
         }
 
@@ -92,7 +95,7 @@ export class RolesController extends AbstractController implements IRolesBusines
             userId,
             (err, existingRoles) => {
                 if (err) {
-                    callback(err);
+                    callback(err, null);
                     return;
                 }
 
@@ -108,9 +111,8 @@ export class RolesController extends AbstractController implements IRolesBusines
         );
     }
     
-    public authorize(correlationId: string, userId: string, roles: string[], callback) {
-        callback = this.instrument(correlationId, 'roles.authorize', callback);
-
+    public authorize(correlationId: string, userId: string, roles: string[],
+        callback: (err: any, authorized: boolean) => void): void {
         // If there are no roles then skip processing
         if (roles.length == 0) {
             if (callback) callback(null, true);
@@ -122,7 +124,7 @@ export class RolesController extends AbstractController implements IRolesBusines
             userId,
             (err, existingRoles) => {
                 if (err) {
-                    callback(err);
+                    callback(err, false);
                     return;
                 }
                 

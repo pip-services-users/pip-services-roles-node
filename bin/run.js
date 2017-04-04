@@ -1,13 +1,7 @@
-/**
- * @file User roles process launcher
- * @copyright Digital Living Software Corp. 2014-2016
- */
+let RolesProcess = require('../obj/src/container/RolesProcess').RolesProcess;
 
-/* global */
-
-'use strict';
-
-var RolesProcessRunner = require('../lib/src/run/RolesProcessRunner').RolesProcessRunner;
-
-var runner = new RolesProcessRunner();
-runner.startWithDefaultConfig('../config/config.json');
+try {
+    new RolesProcess().runWithArguments(process.argv);
+} catch (ex) {
+    console.error(ex);
+}

@@ -13,7 +13,7 @@ You can get it from the official site at https://nodejs.org/en/download
 
 **Step 1.** Download microservices by following [instructions](Download.md)
 
-**Step 2.** Add **config.json** file to the root of the microservice folder and set configuration parameters. 
+**Step 2.** Add **config.yaml** file to the root of the microservice folder and set configuration parameters. 
 See [Configuration Guide](Configuration.md) for details.
 
 **Step 3.** Start the microservice using the command:
@@ -34,7 +34,7 @@ To learn more about Seneca microservices framework to go http://senecajs.org
     ...
     "dependencies": {
         ....
-        "pip-services-roles": "git+ssh://git@github.com:pip-services/pip-services-roles.git",
+        "pip-services-roles-node": "^1.0.*",
         ...
     }
 }
@@ -59,16 +59,19 @@ See [Configuration Guide](Configuration.md) for details.
 var seneca = require('seneca')();
 
 var config = {
-    log: { type: 'console' },
-    counters: { type: 'log' },
-    db: {
+    logger: { 
+        level: 'debug' 
+    },
+    persistence: {
         type: 'file',
         path: 'roles.json'
     }
 };
 
-seneca.use('pip-services-roles', config);
+var plugin = require('pip-services-roles-node').RolesSenecaPlugin;
+
+seneca.use(roles, config);
 ```
 
 You can use the microservice by calling seneca commands directly as described in [Seneca Protocol](SenecaProtocolV1.md)
-or by using [RolesSenecaClient](https://github.com/pip-services/pip-clients-roles-node/NodeClientApiV1.md/#client_seneca)
+or by using [RolesSenecaClient](https://github.com/pip-services-users/pip-clients-roles-node/NodeClientApiV1.md/#client_seneca)

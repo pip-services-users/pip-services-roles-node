@@ -1,9 +1,12 @@
-import { CommandSet } from 'pip-services-runtime-node';
-import { ICommand } from 'pip-services-runtime-node';
-import { Command } from 'pip-services-runtime-node';
-import { Schema } from 'pip-services-runtime-node';
-import { DynamicMap } from 'pip-services-runtime-node';
+import { CommandSet } from 'pip-services-commons-node';
+import { ICommand } from 'pip-services-commons-node';
+import { Command } from 'pip-services-commons-node';
+import { Schema } from 'pip-services-commons-node';
+import { Parameters } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
 
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesBusinessLogic } from './IRolesBusinessLogic';
 
 export class RolesCommandSet extends CommandSet {
@@ -24,12 +27,10 @@ export class RolesCommandSet extends CommandSet {
 
 	private makeGetRolesCommand(): ICommand {
 		return new Command(
-			this._logic,
 			"get_roles",
-			new Schema()
-				.withProperty("user_id", "string"),
-            (correlationId: string, args: DynamicMap, callback: (err: any, result: any) => void) => {
-                let userId = args.getNullableString("user_id");
+			null,
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let userId = args.getAsNullableString("user_id");
                 this._logic.getRoles(correlationId, userId, callback);
             }
 		);
@@ -37,14 +38,11 @@ export class RolesCommandSet extends CommandSet {
 
 	private makeSetRolesCommand(): ICommand {
 		return new Command(
-			this._logic,
 			"set_roles",
-			new Schema()
-				.withProperty("user_id", "string")
-				.withArray("roles", "string"),
-            (correlationId: string, args: DynamicMap, callback: (err: any, result: any) => void) => {
-                let userId = args.getNullableString("user_id");
-                let roles = args.getArray("roles");
+			null,
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let userId = args.getAsNullableString("user_id");
+                let roles = args.getAsArray("roles");
                 this._logic.setRoles(correlationId, userId, roles, callback);
             }
 		);
@@ -52,14 +50,11 @@ export class RolesCommandSet extends CommandSet {
 
 	private makeGrantRolesCommand(): ICommand {
 		return new Command(
-			this._logic,
 			"grant_roles",
-			new Schema()
-				.withProperty("user_id", "string")
-				.withArray("roles", "string"),
-            (correlationId: string, args: DynamicMap, callback: (err: any, result: any) => void) => {
-                let userId = args.getNullableString("user_id");
-                let roles = args.getArray("roles");
+			null,
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let userId = args.getAsNullableString("user_id");
+                let roles = args.getAsArray("roles");
                 this._logic.grantRoles(correlationId, userId, roles, callback);
             }
 		);
@@ -67,14 +62,11 @@ export class RolesCommandSet extends CommandSet {
 
 	private makeRevokeRolesCommand(): ICommand {
 		return new Command(
-			this._logic,
 			"revoke_roles",
-			new Schema()
-				.withProperty("user_id", "string")
-				.withArray("roles", "string"),
-            (correlationId: string, args: DynamicMap, callback: (err: any, result: any) => void) => {
-                let userId = args.getNullableString("user_id");
-                let roles = args.getArray("roles");
+			null,
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let userId = args.getAsNullableString("user_id");
+                let roles = args.getAsArray("roles");
                 this._logic.revokeRoles(correlationId, userId, roles, callback);
             }
 		);
@@ -82,14 +74,11 @@ export class RolesCommandSet extends CommandSet {
 
 	private makeAuthorizeCommand(): ICommand {
 		return new Command(
-			this._logic,
 			"authorize",
-			new Schema()
-				.withProperty("user_id", "string")
-				.withArray("roles", "string"),
-            (correlationId: string, args: DynamicMap, callback: (err: any, result: any) => void) => {
-                let userId = args.getNullableString("user_id");
-                let roles = args.getArray("roles");
+			null,
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let userId = args.getAsNullableString("user_id");
+                let roles = args.getAsArray("roles");
                 this._logic.authorize(correlationId, userId, roles, (err, authorized) => {
 					if (err) callback(err, null);
 					else callback(null, { authorized: authorized });

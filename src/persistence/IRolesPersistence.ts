@@ -1,6 +1,15 @@
-import { IPersistence } from 'pip-services-runtime-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { IGetter } from 'pip-services-data-node';
+import { ISetter } from 'pip-services-data-node';
 
-export interface IRolesPersistence extends IPersistence {
-    getRoles(correlationId: string, userId: string, callback: any): void;
-    setRoles(correlationId: string, userId: string, roles: string[], callback: any): void;
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
+
+export interface IRolesPersistence 
+    extends IGetter<UserRolesV1, string>, ISetter<UserRolesV1> 
+{
+    getOneById(correlation_id: string, id: string, callback: (err: any, item: UserRolesV1) => void): void;
+
+    set(correlation_id: string, item: UserRolesV1, callback?: (err: any, item: UserRolesV1) => void): void;
 }

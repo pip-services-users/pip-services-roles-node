@@ -1,54 +1,32 @@
 let _ = require('lodash');
-let async = require('async');
 
-import { Category } from 'pip-services-runtime-node';
-import { ComponentDescriptor } from 'pip-services-runtime-node';
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { MongoDbPersistence } from 'pip-services-runtime-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services-data-node';
+
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from './IRolesPersistence';
+import { UserRolesMongoDbSchema } from './UserRolesMongoDbSchema';
 
-export class RolesMongoDbPersistence extends MongoDbPersistence implements IRolesPersistence {
-	/**
-	 * Unique descriptor for the RolesMongoDbPersistence component
-	 */
-	public static Descriptor: ComponentDescriptor = new ComponentDescriptor(
-		Category.Persistence, "pip-services-roles", "mongodb", "*"
-	);
+export class RolesMongoDbPersistence 
+    extends IdentifiableMongoDbPersistence<UserRolesV1, string> 
+    implements IRolesPersistence {
 
     constructor() {
-        super(RolesMongoDbPersistence.Descriptor, require('./UserRoleModel'));
-    }
-        
-    public getRoles(correlationId: string, userId: string, callback) {
-        this._model.findById(
-            userId, 
-            (err, item) => {
-                let roles = item ? item.roles : [];
-                roles = _.map(roles, (role) => this.jsonToPublic(role));
-                callback(err, roles);
-            }
-        );
+        super('user_roles', UserRolesMongoDbSchema());
     }
 
-    public setRoles(correlationId: string, userId: string, roles: string[], callback) {
-        this._model.findByIdAndUpdate(
-            userId,
-            {
-                $set: {
-                    roles: roles,
-                    updated: new Date()
-                }
-            },
-            {
-                'new': true,
-                upsert: true
-            },
-            (err, item) => {
-                let roles = item ? item.roles : []; 
-                roles = _.map(roles, (role) => this.jsonToPublic(role));
-                callback(err, roles);
-            }
-        );
+    public set(correlationId: string, item: UserRolesV1,
+        callback: (err: any, item: UserRolesV1) => void): void {
+        if (item == null) {
+            callback(null, null);
+            return;
+        }
+
+        item = _.clone(item);
+        item.update_time = new Date();
+        super.set(correlationId, item, callback);
     }
 
 }

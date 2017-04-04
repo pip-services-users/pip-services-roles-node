@@ -2,41 +2,34 @@ let _ = require('lodash');
 let async = require('async');
 let assert = require('chai').assert;
 
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { ComponentSet } from 'pip-services-runtime-node';
-import { LifeCycleManager } from 'pip-services-runtime-node';
+import { ConfigParams } from 'pip-services-commons-node';
+import { Descriptor } from 'pip-services-commons-node';
+import { References } from 'pip-services-commons-node';
 
 import { RolesMemoryPersistence } from '../../src/persistence/RolesMemoryPersistence';
 import { RolesController } from '../../src/logic/RolesController';
 
 let ROLES: string[] = ['Role 1', 'Role 2', 'Role 3'];
 
-suite('RolesController', ()=> {        
-    let db = new RolesMemoryPersistence();
-    db.configure(new ComponentConfig());
+suite('RolesController', ()=> {
+    let controller: RolesController;
 
-    let ctrl = new RolesController();
-    ctrl.configure(new ComponentConfig());
+    setup(() => {
+        let persistence = new RolesMemoryPersistence();
+        controller = new RolesController();
 
-    let components = ComponentSet.fromComponents(db, ctrl);
-
-    suiteSetup((done) => {
-        LifeCycleManager.linkAndOpen(components, done);
-    });
-    
-    suiteTeardown((done) => {
-        LifeCycleManager.close(components, done);
-    });
-    
-    setup((done) => {
-        db.clearTestData(done);
+        let references: References = References.fromTuples(
+            new Descriptor('pip-services-roles', 'persistence', 'memory', 'default', '1.0'), persistence,
+            new Descriptor('pip-services-roles', 'controller', 'default', 'default', '1.0'), controller
+        );
+        controller.setReferences(references);
     });
 
     test('Get and Set Roles', (done) => {
         async.series([
         // Update party roles
             (callback) => {
-                ctrl.setRoles(
+                controller.setRoles(
                     null,
                     '1',
                     ROLES,
@@ -51,7 +44,7 @@ suite('RolesController', ()=> {
             },
         // Read and check party roles
             (callback) => {
-                ctrl.getRoles(
+                controller.getRoles(
                     null,
                     '1',
                     (err, roles) => {
@@ -70,7 +63,7 @@ suite('RolesController', ()=> {
         async.series([
         // Grant roles first time
             (callback) => {
-                ctrl.grantRoles(
+                controller.grantRoles(
                     null,
                     '1',
                     ['Role 1'],
@@ -87,7 +80,7 @@ suite('RolesController', ()=> {
             },
         // Grant roles second time
             (callback) => {
-                ctrl.grantRoles(
+                controller.grantRoles(
                     null,
                     '1',
                     ['Role 1', 'Role 2', 'Role 3'],
@@ -104,7 +97,7 @@ suite('RolesController', ()=> {
             },
         // Revoke roles first time
             (callback) => {
-                ctrl.revokeRoles(
+                controller.revokeRoles(
                     null,
                     '1',
                     ['Role 1'],
@@ -121,7 +114,7 @@ suite('RolesController', ()=> {
             },
         // Get roles
             (callback) => {
-                ctrl.getRoles(
+                controller.getRoles(
                     null,
                     '1',
                     (err, roles) => {
@@ -136,7 +129,7 @@ suite('RolesController', ()=> {
             },
         // Revoke roles second time
             (callback) => {
-                ctrl.revokeRoles(
+                controller.revokeRoles(
                     null,
                     '1',
                     ['Role 1', 'Role 2'],
@@ -158,7 +151,7 @@ suite('RolesController', ()=> {
         async.series([
         // Grant roles
             (callback) => {
-                ctrl.grantRoles(
+                controller.grantRoles(
                     null,
                     '1',
                     ['Role 1', 'Role 2'],
@@ -173,7 +166,7 @@ suite('RolesController', ()=> {
             },
         // Authorize positively
             (callback) => {
-                ctrl.authorize(
+                controller.authorize(
                     null,
                     '1',
                     ['Role 1'],
@@ -188,7 +181,7 @@ suite('RolesController', ()=> {
             },
         // Authorize negatively
             (callback) => {
-                ctrl.authorize(
+                controller.authorize(
                     null,
                     '1',
                     ['Role 2', 'Role 3'],

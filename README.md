@@ -17,16 +17,16 @@ This microservice has no dependencies on other microservices.
 * [Configuration Guide](doc/Configuration.md)
 * [Deployment Guide](doc/Deployment.md)
 * Client SDKs
-  - [Node.js SDK](https://github.com/pip-services/pip-clients-roles-node)
+  - [Node.js SDK](https://github.com/pip-services-users/pip-clients-roles-node)
 * Communication Protocols
-  - [HTTP/REST Version 1](doc/RestProtocolV1.md)
+  - [HTTP Version 1](doc/HttpProtocolV1.md)
   - [Seneca Version 1](doc/SenecaProtocolV1.md)
 
 ## Download
 
 Right now the only way to get the microservice is to check it out directly from github repository
 ```bash
-git clone git@github.com:pip-services/pip-services-roles.git
+git clone git@github.com:pip-services-users/pip-services-roles-node.git
 ```
 
 Pip.Service team is working to implement packaging and make stable releases available for your 
@@ -34,68 +34,28 @@ as zip downloadable archieves.
 
 ## Run
 
-Add **config.json** file to the root of the microservice folder and set configuration parameters.
-As the starting point you can use example configuration from **config.example.json** file. 
+Add **config.yaml** file to the root of the microservice folder and set configuration parameters.
+As the starting point you can use example configuration from **config.example.yaml** file. 
 
 Example of microservice configuration
-```javascript
-{    
-    "logs": {
-        "descriptor": { 
-            "type": "console"
-        },
-        "options": { 
-            "level": 5
-        }
-    },    
-    "counters": {
-        "descriptor": { 
-            "type": "log"
-        },
-        "options": { 
-            "timeout": 10000
-        }
-    },
-    "persistence": {
-        "descriptor": {
-            "group": "pip-services-roles",            
-            "type": "file"
-        },
-        "options": {
-            "path": "data/roles.json"
-        },
-    },    
-    "controllers": {
-        "descriptor": {
-            "group": "pip-services-roles"            
-        }
-    },    
-    "clients": [],    
-    "services": [
-        {
-            "descriptor": {
-                "group": "pip-services-roles",            
-                "type": "seneca"
-            },
-            "endpoint": {
-                "protocol": "tcp",
-                "host": "localhost",
-                "port": 8813
-            }
-        },
-        {
-            "descriptor": {
-                "group": "pip-services-roles",            
-                "type": "rest"
-            },
-            "endpoint": {
-                "protocol": "http",
-                "host": "localhost",
-                "port": 8013
-            }
-        }
-    ]   
-}
+```yaml
+- descriptor: "pip-services-container:container-info:default:default:1.0"
+  name: "pip-services-roles"
+  description: "User roles microservice"
+
+- descriptor: "pip-services-commons:logger:console:default:1.0"
+  level: "trace"
+
+- descriptor: "pip-services-roles:persistence:file:default:1.0"
+  path: "./data/roles.json"
+
+- descriptor: "pip-services-roles:controller:default:default:1.0"
+
+- descriptor: "pip-services-roles:service:http:default:1.0"
+  connection:
+    protocol: "http"
+    host: "0.0.0.0"
+    port: 3000
 ```
  
 For more information on the microservice configuration see [Configuration Guide](Configuration.md).
@@ -124,15 +84,15 @@ If you use Node.js then you should add dependency to the client SDK into **packa
 
 Inside your code get the reference to the client SDK
 ```javascript
-var sdk = new require('pip-clients-roles-node').Version1;
+var sdk = new require('pip-clients-roles-node');
 ```
 
 Define client configuration parameters that match configuration of the microservice external API
 ```javascript
 // Client configuration
 var config = {
-    endpoint: {
-        type: 'http',
+    connection: {
+        protocol: 'http',
         host: 'localhost', 
         port: 8012
     }
@@ -142,10 +102,10 @@ var config = {
 Instantiate the client and open connection to the microservice
 ```javascript
 // Create the client instance
-var client = sdk.RolesRestClient(config);
+var client = sdk.RolesHttpClientV1(config);
 
 // Connect to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error('Connection to the microservice failed');
         console.error(err);
@@ -163,7 +123,7 @@ Now the client is ready to perform operations
 client.grantRoles(
     null,
     '123',
-    roles: ['admin'],
+    ['admin'],
     function (err, roles) {
         ...
     }
@@ -174,10 +134,8 @@ client.grantRoles(
 // Authorize user
 client.authorize(
     null,
-    {
-        user_id: '123',
-        roles: ['admin']  
-    },
+    '123',
+    ['admin'],
     function(err, authorized) {
     ...    
     }

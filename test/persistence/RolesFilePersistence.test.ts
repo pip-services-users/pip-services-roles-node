@@ -1,43 +1,28 @@
-import { ComponentSet } from 'pip-services-runtime-node';
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { DynamicMap } from 'pip-services-runtime-node';
+import { ConfigParams } from 'pip-services-commons-node';
 
 import { RolesFilePersistence } from '../../src/persistence/RolesFilePersistence';
 import { RolesPersistenceFixture } from './RolesPersistenceFixture';
 
-let config = ComponentConfig.fromValue({
-    descriptor: {
-        type: 'file'
-    },
-    options: {
-        path: './data/roles.test.json',
-        data: []
-    }
-});
-
 suite('RolesFilePersistence', ()=> {
-    let db, fixture;
+    let persistence: RolesFilePersistence;
+    let fixture: RolesPersistenceFixture;
     
-    suiteSetup((done) => {
-        db = new RolesFilePersistence();
-        db.configure(config);
-
-        fixture = new RolesPersistenceFixture(db);
-        
-        db.link(new ComponentSet());
-        db.open(done); 
-    });
-    
-    suiteTeardown((done) => {
-        db.close(done);
-    });
-
     setup((done) => {
-        db.clearTestData(done);
+        persistence = new RolesFilePersistence('./data/roles.test.json');
+
+        fixture = new RolesPersistenceFixture(persistence);
+        
+        persistence.open(null, (err) => {
+            if (err) done(err);
+            else persistence.clear(null, done);
+        });
+    });
+    
+    teardown((done) => {
+        persistence.close(null, done);
     });
         
     test('Get and Set Roles', (done) => {
         fixture.testGetAndSetRoles(done);
     });
-
 });

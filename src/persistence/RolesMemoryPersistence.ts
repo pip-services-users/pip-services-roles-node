@@ -1,29 +1,31 @@
 let _ = require('lodash');
 
-import { Category } from 'pip-services-runtime-node';
-import { ComponentDescriptor } from 'pip-services-runtime-node';
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { RolesFilePersistence } from './RolesFilePersistence';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { IdentifiableMemoryPersistence } from 'pip-services-data-node';
+
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from './IRolesPersistence';
 
-export class RolesMemoryPersistence extends RolesFilePersistence implements IRolesPersistence {
-	/**
-	 * Unique descriptor for the RolesFilePersistence component
-	 */
-	public static Descriptor: ComponentDescriptor = new ComponentDescriptor(
-		Category.Persistence, "pip-services-roles", "memory", "*"
-	);
+export class RolesMemoryPersistence 
+    extends IdentifiableMemoryPersistence<UserRolesV1, string> 
+    implements IRolesPersistence {
 
     constructor() {
-        super(RolesMemoryPersistence.Descriptor);
+        super();
     }
 
-    public configure(config: ComponentConfig): void {
-        super.configure(config.withDefaultTuples("options.path", ""));
+    public set(correlationId: string, item: UserRolesV1,
+        callback: (err: any, item: UserRolesV1) => void): void {
+        if (item == null) {
+            callback(null, null);
+            return;
+        }
+
+        item = _.clone(item);
+        item.update_time = new Date();
+        super.set(correlationId, item, callback);
     }
 
-    public save(callback: (err: any) => void): void {
-        // Skip saving data to disk
-        if (callback) callback(null);
-    }
 }

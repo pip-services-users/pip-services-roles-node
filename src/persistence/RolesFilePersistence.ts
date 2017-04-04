@@ -1,53 +1,26 @@
-let _ = require('lodash');
+import { ConfigParams } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { JsonFilePersister } from 'pip-services-data-node';
 
-import { Category } from 'pip-services-runtime-node';
-import { ComponentDescriptor } from 'pip-services-runtime-node';
-import { ComponentConfig } from 'pip-services-runtime-node';
-import { FilePersistence } from 'pip-services-runtime-node';
-import { IRolesPersistence } from './IRolesPersistence';
+import { RolesMemoryPersistence } from './RolesMemoryPersistence';
+import { UserRolesV1 } from '../data/version1/UserRolesV1';
 
-export class RolesFilePersistence extends FilePersistence implements IRolesPersistence {
-	/**
-	 * Unique descriptor for the RolesFilePersistence component
-	 */
-	public static Descriptor: ComponentDescriptor = new ComponentDescriptor(
-		Category.Persistence, "pip-services-roles", "file", "*"
-	);
+export class RolesFilePersistence extends RolesMemoryPersistence {
+	protected _persister: JsonFilePersister<UserRolesV1>;
 
-    constructor(descriptor?: ComponentDescriptor) {
-        super(descriptor || RolesFilePersistence.Descriptor);
-    }
-        
-    public getRoles(correlationId: string, userId: string, callback) {
-        this.getById(userId, (err, item) => {
-            let roles = item ? item.roles : [];
-            roles = roles || [];  
-            callback(err, roles);
-        });
+    public constructor(path?: string) {
+        super();
+
+        this._persister = new JsonFilePersister<UserRolesV1>(path);
+        this._loader = this._persister;
+        this._saver = this._persister;
     }
 
-    public setRoles(correlationId: string, userId: string, roles: string[], callback: any) {
-        this.getById(userId, (err, item) => {
-            if (err) {
-                callback(err, null);
-                return;
-            } 
-                        
-            if (item == null) {
-                item = {
-                    id: userId
-                };               
-                this._items.push(item);
-            }
-            
-            item.roles = roles;
-            item.updated = new Date();
-                       
-            this.save((err) => {
-                 if (err) callback(err);
-                 else callback(null, roles);
-            });
-        });
+    public configure(config: ConfigParams): void {
+        super.configure(config);
+        this._persister.configure(config);
     }
 
 }
