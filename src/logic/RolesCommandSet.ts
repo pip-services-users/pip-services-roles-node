@@ -5,6 +5,9 @@ import { Schema } from 'pip-services-commons-node';
 import { Parameters } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
+import { ObjectSchema } from 'pip-services-commons-node';
+import { ArraySchema } from 'pip-services-commons-node';
+import { TypeCode } from 'pip-services-commons-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesBusinessLogic } from './IRolesBusinessLogic';
@@ -28,7 +31,8 @@ export class RolesCommandSet extends CommandSet {
 	private makeGetRolesCommand(): ICommand {
 		return new Command(
 			"get_roles",
-			null,
+			new ObjectSchema(true)
+				.withRequiredProperty('user_id', TypeCode.String),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
                 this._logic.getRoles(correlationId, userId, callback);
@@ -39,7 +43,9 @@ export class RolesCommandSet extends CommandSet {
 	private makeSetRolesCommand(): ICommand {
 		return new Command(
 			"set_roles",
-			null,
+			new ObjectSchema(true)
+				.withRequiredProperty('user_id', TypeCode.String)
+				.withRequiredProperty('roles', new ArraySchema(TypeCode.String)),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
                 let roles = args.getAsArray("roles");
@@ -51,7 +57,9 @@ export class RolesCommandSet extends CommandSet {
 	private makeGrantRolesCommand(): ICommand {
 		return new Command(
 			"grant_roles",
-			null,
+			new ObjectSchema(true)
+				.withRequiredProperty('user_id', TypeCode.String)
+				.withRequiredProperty('roles', new ArraySchema(TypeCode.String)),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
                 let roles = args.getAsArray("roles");
@@ -63,7 +71,9 @@ export class RolesCommandSet extends CommandSet {
 	private makeRevokeRolesCommand(): ICommand {
 		return new Command(
 			"revoke_roles",
-			null,
+			new ObjectSchema(true)
+				.withRequiredProperty('user_id', TypeCode.String)
+				.withRequiredProperty('roles', new ArraySchema(TypeCode.String)),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
                 let roles = args.getAsArray("roles");
@@ -75,7 +85,9 @@ export class RolesCommandSet extends CommandSet {
 	private makeAuthorizeCommand(): ICommand {
 		return new Command(
 			"authorize",
-			null,
+			new ObjectSchema(true)
+				.withRequiredProperty('user_id', TypeCode.String)
+				.withRequiredProperty('roles', new ArraySchema(TypeCode.String)),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
                 let roles = args.getAsArray("roles");

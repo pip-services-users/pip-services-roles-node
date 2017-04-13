@@ -5,15 +5,9 @@ import { RolesFactory } from '../build/RolesFactory';
 
 export class RolesProcess extends ProcessContainer {
 
-    protected initReferences(references: IReferences): void {
-        super.initReferences(references);
-
-        // Factory to statically resolve Roles components
-        references.put(RolesFactory.Descriptor, new RolesFactory());
-    }
-
-    public runWithArguments(args: string[]): void {
-        return this.runWithArgumentsOrConfigFile("roles", args, "./config/config.yaml");
+    public constructor() {
+        super("roles", "User roles microservice");
+        this._factories.add(new RolesFactory);
     }
 
 }

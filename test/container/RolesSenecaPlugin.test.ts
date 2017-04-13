@@ -36,12 +36,12 @@ suite('RolesSenecaPlugin', ()=> {
         seneca.act(
             {
                 role: 'roles',
-                cmd: 'get_roles',
-                user_id: '1'
+                cmd: 'grant_roles',
+                user_id: '1',
+                roles: ['Role 1']
             },
             (err, roles) => {
                 assert.isNull(err);
-                assert.lengthOf(roles, 0);
                 done();
             }
         );

@@ -8,7 +8,7 @@ suite('RolesMongoDbPersistence', ()=> {
     let fixture: RolesPersistenceFixture;
 
     setup((done) => {
-        let config = YamlConfigReader.readConfig(null, './config/test_connections.yaml');
+        let config = YamlConfigReader.readConfig(null, './config/test_connections.yaml', null);
         let dbConfig = config.getSection('mongodb');
 
         persistence = new RolesMongoDbPersistence();
