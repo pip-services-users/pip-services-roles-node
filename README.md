@@ -22,6 +22,30 @@ This microservice has no dependencies on other microservices.
   - [HTTP Version 1](doc/HttpProtocolV1.md)
   - [Seneca Version 1](doc/SenecaProtocolV1.md)
 
+##  Contract
+
+Logical contract of the microservice is presented below. For physical implementation (HTTP/REST, Thrift, Seneca, Lambda, etc.),
+please, refer to documentation of the specific protocol.
+
+```typescript
+interface IRolesV1 {
+    getRoles(correlationId: string, userId: string,
+        callback: (err: any, roles: string[]) => void): void;
+
+    setRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    grantRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    revokeRoles(correlationId: string, userId: string, roles: string[],
+        callback?: (err: any, roles: string[]) => void): void;
+
+    authorize(correlationId: string, userId: string, roles: string[],
+        callback: (err: any, authorized: boolean) => void): void;
+}
+```
+
 ## Download
 
 Right now the only way to get the microservice is to check it out directly from github repository
