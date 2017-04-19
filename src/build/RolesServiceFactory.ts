@@ -8,7 +8,7 @@ import { RolesController } from '../logic/RolesController';
 import { RolesHttpServiceV1 } from '../services/version1/RolesHttpServiceV1';
 import { RolesSenecaServiceV1 } from '../services/version1/RolesSenecaServiceV1'; 
 
-export class RolesFactory extends Factory {
+export class RolesServiceFactory extends Factory {
 	public static Descriptor = new Descriptor("pip-services-roles", "factory", "default", "default", "1.0");
 	public static MemoryPersistenceDescriptor = new Descriptor("pip-services-roles", "persistence", "memory", "*", "1.0");
 	public static FilePersistenceDescriptor = new Descriptor("pip-services-roles", "persistence", "file", "*", "1.0");
@@ -19,12 +19,12 @@ export class RolesFactory extends Factory {
 	
 	constructor() {
 		super();
-		this.registerAsType(RolesFactory.MemoryPersistenceDescriptor, RolesMemoryPersistence);
-		this.registerAsType(RolesFactory.FilePersistenceDescriptor, RolesFilePersistence);
-		this.registerAsType(RolesFactory.MongoDbPersistenceDescriptor, RolesMongoDbPersistence);
-		this.registerAsType(RolesFactory.ControllerDescriptor, RolesController);
-		this.registerAsType(RolesFactory.SenecaServiceDescriptor, RolesSenecaServiceV1);
-		this.registerAsType(RolesFactory.HttpServiceDescriptor, RolesHttpServiceV1);
+		this.registerAsType(RolesServiceFactory.MemoryPersistenceDescriptor, RolesMemoryPersistence);
+		this.registerAsType(RolesServiceFactory.FilePersistenceDescriptor, RolesFilePersistence);
+		this.registerAsType(RolesServiceFactory.MongoDbPersistenceDescriptor, RolesMongoDbPersistence);
+		this.registerAsType(RolesServiceFactory.ControllerDescriptor, RolesController);
+		this.registerAsType(RolesServiceFactory.SenecaServiceDescriptor, RolesSenecaServiceV1);
+		this.registerAsType(RolesServiceFactory.HttpServiceDescriptor, RolesHttpServiceV1);
 	}
 	
 }

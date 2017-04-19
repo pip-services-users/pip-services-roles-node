@@ -1,1 +1,1 @@
-export { RolesFactory } from './RolesFactory';
+export { RolesServiceFactory } from './RolesServiceFactory';

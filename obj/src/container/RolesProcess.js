@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_container_node_1 = require("pip-services-container-node");
-const RolesFactory_1 = require("../build/RolesFactory");
+const RolesServiceFactory_1 = require("../build/RolesServiceFactory");
 class RolesProcess extends pip_services_container_node_1.ProcessContainer {
     constructor() {
         super("roles", "User roles microservice");
-        this._factories.add(new RolesFactory_1.RolesFactory);
+        this._factories.add(new RolesServiceFactory_1.RolesServiceFactory);
     }
 }
 exports.RolesProcess = RolesProcess;
