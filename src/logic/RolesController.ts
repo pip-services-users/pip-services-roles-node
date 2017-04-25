@@ -11,10 +11,10 @@ import { CommandSet } from 'pip-services-commons-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from '../persistence/IRolesPersistence';
-import { IRolesBusinessLogic } from './IRolesBusinessLogic';
+import { IRolesController } from './IRolesController';
 import { RolesCommandSet } from './RolesCommandSet';
 
-export class RolesController implements IConfigurable, IReferenceable, ICommandable, IRolesBusinessLogic {
+export class RolesController implements IConfigurable, IReferenceable, ICommandable, IRolesController {
     private static _defaultConfig: ConfigParams = ConfigParams.fromTuples(
         'dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0'
     );

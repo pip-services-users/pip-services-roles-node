@@ -1,2 +1,2 @@
-export { IRolesBusinessLogic } from './IRolesBusinessLogic';
+export { IRolesController } from './IRolesController';
 export { RolesController } from './RolesController';

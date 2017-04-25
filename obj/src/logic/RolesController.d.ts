@@ -4,8 +4,8 @@ import { IReferences } from 'pip-services-commons-node';
 import { IReferenceable } from 'pip-services-commons-node';
 import { ICommandable } from 'pip-services-commons-node';
 import { CommandSet } from 'pip-services-commons-node';
-import { IRolesBusinessLogic } from './IRolesBusinessLogic';
-export declare class RolesController implements IConfigurable, IReferenceable, ICommandable, IRolesBusinessLogic {
+import { IRolesController } from './IRolesController';
+export declare class RolesController implements IConfigurable, IReferenceable, ICommandable, IRolesController {
     private static _defaultConfig;
     private _dependencyResolver;
     private _persistence;

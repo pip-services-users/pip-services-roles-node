@@ -1,4 +1,4 @@
-export interface IRolesBusinessLogic {
+export interface IRolesController {
     getRoles(correlationId: string, userId: string,
         callback: (err: any, roles: string[]) => void): void;
 

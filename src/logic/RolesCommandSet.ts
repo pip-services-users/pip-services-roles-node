@@ -10,12 +10,12 @@ import { ArraySchema } from 'pip-services-commons-node';
 import { TypeCode } from 'pip-services-commons-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
-import { IRolesBusinessLogic } from './IRolesBusinessLogic';
+import { IRolesController } from './IRolesController';
 
 export class RolesCommandSet extends CommandSet {
-    private _logic: IRolesBusinessLogic;
+    private _logic: IRolesController;
 
-    constructor(logic: IRolesBusinessLogic) {
+    constructor(logic: IRolesController) {
         super();
 
         this._logic = logic;
