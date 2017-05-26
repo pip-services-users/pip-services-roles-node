@@ -3,7 +3,7 @@
 Roles microservice implements a REST compatible API, that can be accessed on configured port.
 All input and output data is serialized in JSON format. Errors are returned in [standard format]().
 
-* [POST /roles/get_roles](#operation1)
+* [POST /roles/get_roles_by_id](#operation1)
 * [POST /roles/set_roles](#operation2)
 * [POST /roles/grant_roles](#operation3)
 * [POST /roles/revoke_roles](#operation4)
@@ -11,7 +11,7 @@ All input and output data is serialized in JSON format. Errors are returned in [
 
 ## Operations
 
-### <a name="operation1"></a> Method: 'POST', route '/roles/get_roles'
+### <a name="operation1"></a> Method: 'POST', route '/roles/get_roles_by_id'
 
 Gets all roles granted to specified user.
 

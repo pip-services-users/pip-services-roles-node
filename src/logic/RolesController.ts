@@ -8,6 +8,9 @@ import { IReferenceable } from 'pip-services-commons-node';
 import { DependencyResolver } from 'pip-services-commons-node';
 import { ICommandable } from 'pip-services-commons-node';
 import { CommandSet } from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams } from 'pip-services-commons-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from '../persistence/IRolesPersistence';
@@ -37,8 +40,13 @@ export class RolesController implements IConfigurable, IReferenceable, ICommanda
             this._commandSet = new RolesCommandSet(this);
         return this._commandSet;
     }
+
+    public getRolesByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+        callback: (err: any, page: DataPage<UserRolesV1>) => void): void {
+        this._persistence.getPageByFilter(correlationId, filter, paging, callback);
+    }
     
-    public getRoles(correlationId: string, userId: string,
+    public getRolesById(correlationId: string, userId: string,
         callback: (err: any, roles: string[]) => void): void {
         this._persistence.getOneById(correlationId, userId, (err, roles) => {
             callback(err, roles ? roles.roles : null);
@@ -61,7 +69,7 @@ export class RolesController implements IConfigurable, IReferenceable, ICommanda
             return;
         }
 
-        this.getRoles(
+        this.getRolesById(
             correlationId, 
             userId,
             (err, existingRoles) => {
@@ -90,7 +98,7 @@ export class RolesController implements IConfigurable, IReferenceable, ICommanda
             return;
         }
 
-        this.getRoles(
+        this.getRolesById(
             correlationId, 
             userId,
             (err, existingRoles) => {
@@ -119,7 +127,7 @@ export class RolesController implements IConfigurable, IReferenceable, ICommanda
             return;
         }
 
-        this.getRoles(
+        this.getRolesById(
             correlationId, 
             userId,
             (err, existingRoles) => {

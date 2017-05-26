@@ -96,7 +96,7 @@ suite('RolesLambdaFunction', ()=> {
                 lambda.act(
                     {
                         role: 'roles',
-                        cmd: 'get_roles',
+                        cmd: 'get_roles_by_id',
                         user_id: '1'
                     },
                     (err, roles) => {

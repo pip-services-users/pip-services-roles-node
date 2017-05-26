@@ -44,7 +44,7 @@ suite('RolesController', ()=> {
             },
         // Read and check party roles
             (callback) => {
-                controller.getRoles(
+                controller.getRolesById(
                     null,
                     '1',
                     (err, roles) => {
@@ -114,7 +114,7 @@ suite('RolesController', ()=> {
             },
         // Get roles
             (callback) => {
-                controller.getRoles(
+                controller.getRolesById(
                     null,
                     '1',
                     (err, roles) => {

@@ -81,7 +81,7 @@ suite('RolesSenecaServiceV1', ()=> {
                 seneca.act(
                     {
                         role: 'roles',
-                        cmd: 'get_roles',
+                        cmd: 'get_roles_by_id',
                         user_id: '1'
                     },
                     (err, roles) => {
@@ -160,7 +160,7 @@ suite('RolesSenecaServiceV1', ()=> {
                 seneca.act(
                     {
                         role: 'roles',
-                        cmd: 'get_roles',
+                        cmd: 'get_roles_by_id',
                         user_id: '1'
                     },
                     (err, roles) => {

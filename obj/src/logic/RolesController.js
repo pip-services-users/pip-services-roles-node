@@ -21,7 +21,10 @@ class RolesController {
             this._commandSet = new RolesCommandSet_1.RolesCommandSet(this);
         return this._commandSet;
     }
-    getRoles(correlationId, userId, callback) {
+    getRolesByFilter(correlationId, filter, paging, callback) {
+        this._persistence.getPageByFilter(correlationId, filter, paging, callback);
+    }
+    getRolesById(correlationId, userId, callback) {
         this._persistence.getOneById(correlationId, userId, (err, roles) => {
             callback(err, roles ? roles.roles : null);
         });
@@ -40,7 +43,7 @@ class RolesController {
                 callback(null, null);
             return;
         }
-        this.getRoles(correlationId, userId, (err, existingRoles) => {
+        this.getRolesById(correlationId, userId, (err, existingRoles) => {
             if (err) {
                 callback(err, null);
                 return;
@@ -56,7 +59,7 @@ class RolesController {
                 callback(null, null);
             return;
         }
-        this.getRoles(correlationId, userId, (err, existingRoles) => {
+        this.getRolesById(correlationId, userId, (err, existingRoles) => {
             if (err) {
                 callback(err, null);
                 return;
@@ -72,7 +75,7 @@ class RolesController {
                 callback(null, true);
             return;
         }
-        this.getRoles(correlationId, userId, (err, existingRoles) => {
+        this.getRolesById(correlationId, userId, (err, existingRoles) => {
             if (err) {
                 callback(err, false);
                 return;

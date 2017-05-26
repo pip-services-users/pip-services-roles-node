@@ -31,7 +31,7 @@ seneca.act(
 );
 ```
 
-* [cmd: 'get_roles'](#operation1)
+* [cmd: 'get_roles_by_id'](#operation1)
 * [cmd: 'set_roles'](#operation2)
 * [cmd: 'grant_roles'](#operation3)
 * [cmd: 'revoke_roles'](#operation4)
@@ -39,7 +39,7 @@ seneca.act(
 
 ## Operations
 
-### <a name="operation1"></a> Cmd: 'get_roles'
+### <a name="operation1"></a> Cmd: 'get_roles_by_id'
 
 Gets all roles granted to specified user.
 

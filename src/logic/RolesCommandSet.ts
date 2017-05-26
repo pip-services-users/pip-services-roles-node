@@ -8,6 +8,8 @@ import { PagingParams } from 'pip-services-commons-node';
 import { ObjectSchema } from 'pip-services-commons-node';
 import { ArraySchema } from 'pip-services-commons-node';
 import { TypeCode } from 'pip-services-commons-node';
+import { FilterParamsSchema } from 'pip-services-commons-node';
+import { PagingParamsSchema } from 'pip-services-commons-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesController } from './IRolesController';
@@ -21,21 +23,36 @@ export class RolesCommandSet extends CommandSet {
         this._logic = logic;
 
         // Register commands to the database
-		this.addCommand(this.makeGetRolesCommand());
+		this.addCommand(this.makeGetRolesByFilterCommand());
+		this.addCommand(this.makeGetRolesByIdCommand());
 		this.addCommand(this.makeSetRolesCommand());
 		this.addCommand(this.makeGrantRolesCommand());
 		this.addCommand(this.makeRevokeRolesCommand());
 		this.addCommand(this.makeAuthorizeCommand());
     }
 
-	private makeGetRolesCommand(): ICommand {
+	private makeGetRolesByFilterCommand(): ICommand {
 		return new Command(
-			"get_roles",
+			"get_roles_by_filter",
+			new ObjectSchema(true)
+				.withOptionalProperty('filter', new FilterParamsSchema())
+				.withOptionalProperty('paging', new PagingParamsSchema()),
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let filter = FilterParams.fromValue(args.get("filter"));
+                let paging = PagingParams.fromValue(args.get("paging"));
+                this._logic.getRolesByFilter(correlationId, filter, paging, callback);
+            }
+		);
+	}
+
+	private makeGetRolesByIdCommand(): ICommand {
+		return new Command(
+			"get_roles_by_id",
 			new ObjectSchema(true)
 				.withRequiredProperty('user_id', TypeCode.String),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let userId = args.getAsNullableString("user_id");
-                this._logic.getRoles(correlationId, userId, callback);
+                this._logic.getRolesById(correlationId, userId, callback);
             }
 		);
 	}

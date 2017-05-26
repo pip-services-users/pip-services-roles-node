@@ -74,7 +74,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Read and check party roles
             (callback) => {
-                rest.post('/roles/get_roles',
+                rest.post('/roles/get_roles_by_id',
                     {
                         user_id: '1'
                     },
@@ -145,7 +145,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Get roles
             (callback) => {
-                rest.post('/roles/get_roles',
+                rest.post('/roles/get_roles_by_id',
                     {
                         user_id: '1'
                     },

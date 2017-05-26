@@ -1,6 +1,8 @@
 let async = require('async');
 let assert = require('chai').assert;
 
+import { FilterParams } from 'pip-services-commons-node';
+
 import { IRolesPersistence } from '../../src/persistence/IRolesPersistence';
 import { UserRolesV1 } from '../../src/data/version1/UserRolesV1';
 
@@ -14,7 +16,7 @@ export class RolesPersistenceFixture {
         this._persistence = persistence;
     }
 
-    testGetAndSetRoles(done) {
+    public testGetAndSetRoles(done) {
         async.series([
         // Set party roles
             (callback) => {
@@ -43,7 +45,22 @@ export class RolesPersistenceFixture {
                         callback();
                     }
                 );
-            }
+            },
+        // Get by filter
+            (callback) => {
+                this._persistence.getPageByFilter(
+                    null,
+                    FilterParams.fromTuples('roles', ROLES),
+                    null,
+                    (err, page) => {
+                        assert.isNull(err);
+                        
+                        assert.lengthOf(page.data, 1);
+
+                        callback();
+                    }
+                );
+            },
         ], done);
     }
 
