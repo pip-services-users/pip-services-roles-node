@@ -50,7 +50,7 @@ export class RolesPersistenceFixture {
             (callback) => {
                 this._persistence.getPageByFilter(
                     null,
-                    FilterParams.fromTuples('roles', ROLES),
+                    FilterParams.fromTuples('roles', ['Role 1', 'Role X']),
                     null,
                     (err, page) => {
                         assert.isNull(err);

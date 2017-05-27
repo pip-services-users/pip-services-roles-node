@@ -22,7 +22,7 @@ export class RolesMemoryPersistence
         
         for (let i1 = 0; i1 < array1.length; i1++) {
             for (let i2 = 0; i2 < array2.length; i2++)
-                if (array1[i1] == array2[i1]) 
+                if (array1[i1] == array2[i2]) 
                     return true;
         }
         
