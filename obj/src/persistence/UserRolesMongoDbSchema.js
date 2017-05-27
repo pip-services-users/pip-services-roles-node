@@ -15,7 +15,7 @@ exports.UserRolesMongoDbSchema = function (collection) {
     });
     schema.set('toJSON', {
         transform: function (doc, ret) {
-            ret.user_id = ret._id;
+            ret.id = ret._id;
             delete ret._id;
             delete ret.__v;
             return ret;
