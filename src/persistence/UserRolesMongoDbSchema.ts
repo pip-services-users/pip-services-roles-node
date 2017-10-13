@@ -6,7 +6,7 @@ export let UserRolesMongoDbSchema = function(collection?: string) {
 
     let schema = new Schema(
         {
-            _id: { type: String, unique: true },
+            _id: { type: String },
             roles: { type: [String], required: false },
             updated: { type: Date, required: true, 'default': Date.now },
         },

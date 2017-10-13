@@ -5,7 +5,7 @@ let Mixed = mongoose_1.Schema.Types.Mixed;
 exports.UserRolesMongoDbSchema = function (collection) {
     collection = collection || 'user_roles';
     let schema = new mongoose_1.Schema({
-        _id: { type: String, unique: true },
+        _id: { type: String },
         roles: { type: [String], required: false },
         updated: { type: Date, required: true, 'default': Date.now },
     }, {
