@@ -1,7 +1,6 @@
 /node_modules
 /npm-debug.log
 /.idea
-/config/config.yml
 /config/test_connections.yml
 /data/roles.test.json
 /data/roles.json
