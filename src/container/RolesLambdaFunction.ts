@@ -1,5 +1,8 @@
 import { Descriptor } from 'pip-services-commons-node';
 import { CommandableLambdaFunction } from 'pip-services-aws-node';
+import { DefaultNetFactory } from 'pip-services-net-node';
+import { DefaultOssFactory } from 'pip-services-oss-node';
+
 import { RolesServiceFactory } from '../build/RolesServiceFactory';
 
 export class RolesLambdaFunction extends CommandableLambdaFunction {
@@ -7,6 +10,8 @@ export class RolesLambdaFunction extends CommandableLambdaFunction {
         super("roles", "User roles function");
         this._dependencyResolver.put('controller', new Descriptor('pip-services-roles', 'controller', 'default', '*', '*'));
         this._factories.add(new RolesServiceFactory());
+        this._factories.add(new DefaultNetFactory);
+        this._factories.add(new DefaultOssFactory);
     }
 }
 
