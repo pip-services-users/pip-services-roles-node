@@ -7,9 +7,9 @@ import { ConfigParams } from 'pip-services-commons-node';
 import { Descriptor } from 'pip-services-commons-node';
 import { References } from 'pip-services-commons-node';
 
-import { RolesMemoryPersistence } from '../../../src/persistence/v1/rolesMemoryPersistence';
-import { RolesController } from '../../../src/logic/v1/rolesController';
-import { RolesHttpServiceV1 } from '../../../src/services/version1/v1/rolesHttpServiceV1';
+import { RolesMemoryPersistence } from '../../../src/persistence/RolesMemoryPersistence';
+import { RolesController } from '../../../src/logic/RolesController';
+import { RolesHttpServiceV1 } from '../../../src/services/version1/RolesHttpServiceV1';
 
 let httpConfig = ConfigParams.fromTuples(
     "connection.protocol", "http",
