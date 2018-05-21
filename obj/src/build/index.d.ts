@@ -1,1 +1,0 @@
-export { RolesServiceFactory } from './RolesServiceFactory';
