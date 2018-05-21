@@ -7,9 +7,9 @@ import { ConfigParams } from 'pip-services-commons-node';
 import { Descriptor } from 'pip-services-commons-node';
 import { References } from 'pip-services-commons-node';
 
-import { RolesMemoryPersistence } from '../../../src/persistence/RolesMemoryPersistence';
-import { RolesController } from '../../../src/logic/RolesController';
-import { RolesHttpServiceV1 } from '../../../src/services/version1/RolesHttpServiceV1';
+import { RolesMemoryPersistence } from '../../../src/persistence/v1/rolesMemoryPersistence';
+import { RolesController } from '../../../src/logic/v1/rolesController';
+import { RolesHttpServiceV1 } from '../../../src/services/version1/v1/rolesHttpServiceV1';
 
 let httpConfig = ConfigParams.fromTuples(
     "connection.protocol", "http",
@@ -58,7 +58,7 @@ suite('RolesHttpServiceV1', ()=> {
         async.series([
         // Set party roles
             (callback) => {
-                rest.post('/roles/set_roles',
+                rest.post('/v1/roles/set_roles',
                     {
                         user_id: '1',
                         roles: ROLES
@@ -74,7 +74,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Read and check party roles
             (callback) => {
-                rest.post('/roles/get_roles_by_id',
+                rest.post('/v1/roles/get_roles_by_id',
                     {
                         user_id: '1'
                     },
@@ -94,7 +94,7 @@ suite('RolesHttpServiceV1', ()=> {
         async.series([
         // Grant roles first time
             (callback) => {
-                rest.post('/roles/grant_roles',
+                rest.post('/v1/roles/grant_roles',
                     { 
                         user_id: '1',
                         roles: ['Role1']
@@ -111,7 +111,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Grant roles second time
             (callback) => {
-                rest.post('/roles/grant_roles',
+                rest.post('/v1/roles/grant_roles',
                     { 
                         user_id: '1',
                         roles: ['Role1', 'Role2', 'Role3']
@@ -128,7 +128,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Revoke roles first time
             (callback) => {
-                rest.post('/roles/revoke_roles',
+                rest.post('/v1/roles/revoke_roles',
                     {
                         user_id: '1',
                         roles: ['Role1']
@@ -145,7 +145,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Get roles
             (callback) => {
-                rest.post('/roles/get_roles_by_id',
+                rest.post('/v1/roles/get_roles_by_id',
                     {
                         user_id: '1'
                     },
@@ -160,7 +160,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Revoke roles second time
             (callback) => {
-                rest.post('/roles/revoke_roles',
+                rest.post('/v1/roles/revoke_roles',
                     {
                         user_id: '1',
                         roles: ['Role1', 'Role2']
@@ -183,7 +183,7 @@ suite('RolesHttpServiceV1', ()=> {
         async.series([
         // Grant roles
             (callback) => {
-                rest.post('/roles/grant_roles',
+                rest.post('/v1/roles/grant_roles',
                     {
                         user_id: '1',
                         roles: ['Role_1', 'Role_2']
@@ -199,7 +199,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Authorize positively
             (callback) => {
-                rest.post('/roles/authorize',
+                rest.post('/v1/roles/authorize',
                     {
                         user_id: '1',
                         roles: ['Role_1']
@@ -215,7 +215,7 @@ suite('RolesHttpServiceV1', ()=> {
             },
         // Authorize negatively
             (callback) => {
-                rest.post('/roles/authorize',
+                rest.post('/v1/roles/authorize',
                     {
                         user_id: '1',
                         roles: ['Role_2', 'Role_3']

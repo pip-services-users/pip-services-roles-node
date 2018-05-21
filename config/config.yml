@@ -47,7 +47,7 @@
 {{#if MONGO_ENABLED}}
 # MongoDB Persistence
 - descriptor: "pip-services-roles:persistence:mongodb:default:1.0"
-  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}roles{{/unless}}
+  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}user_roles{{/unless}}
   connection:
     uri: {{{MONGO_SERVICE_URI}}}
     host: {{{MONGO_SERVICE_HOST}}}{{#unless MONGO_SERVICE_HOST}}localhost{{/unless}}
