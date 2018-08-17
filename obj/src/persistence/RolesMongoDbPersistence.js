@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 let _ = require('lodash');
 const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_oss_node_1 = require("pip-services-oss-node");
+const pip_services_mongodb_node_1 = require("pip-services-mongodb-node");
 const UserRolesMongoDbSchema_1 = require("./UserRolesMongoDbSchema");
-class RolesMongoDbPersistence extends pip_services_oss_node_1.IdentifiableMongoDbPersistence {
+class RolesMongoDbPersistence extends pip_services_mongodb_node_1.IdentifiableMongoDbPersistence {
     constructor() {
         super('user_roles', UserRolesMongoDbSchema_1.UserRolesMongoDbSchema());
     }
