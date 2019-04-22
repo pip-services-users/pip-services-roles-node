@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 let _ = require('lodash');
-const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_commons_node_2 = require("pip-services-commons-node");
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
+const pip_services3_commons_node_2 = require("pip-services3-commons-node");
 const UserRolesV1_1 = require("../data/version1/UserRolesV1");
 const RolesCommandSet_1 = require("./RolesCommandSet");
 class RolesController {
     constructor() {
-        this._dependencyResolver = new pip_services_commons_node_2.DependencyResolver(RolesController._defaultConfig);
+        this._dependencyResolver = new pip_services3_commons_node_2.DependencyResolver(RolesController._defaultConfig);
     }
     configure(config) {
         this._dependencyResolver.configure(config);
@@ -85,6 +85,6 @@ class RolesController {
         });
     }
 }
-RolesController._defaultConfig = pip_services_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0');
+RolesController._defaultConfig = pip_services3_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0');
 exports.RolesController = RolesController;
 //# sourceMappingURL=RolesController.js.map
