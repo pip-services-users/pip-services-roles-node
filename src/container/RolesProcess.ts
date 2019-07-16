@@ -3,6 +3,7 @@ import { ProcessContainer } from 'pip-services3-container-node';
 
 import { RolesServiceFactory } from '../build/RolesServiceFactory';
 import { DefaultRpcFactory } from 'pip-services3-rpc-node';
+import { DefaultGrpcFactory } from 'pip-services3-grpc-node';
 
 export class RolesProcess extends ProcessContainer {
 
@@ -10,6 +11,7 @@ export class RolesProcess extends ProcessContainer {
         super("roles", "User roles microservice");
         this._factories.add(new RolesServiceFactory);
         this._factories.add(new DefaultRpcFactory);
+        this._factories.add(new DefaultGrpcFactory);
     }
 
 }
