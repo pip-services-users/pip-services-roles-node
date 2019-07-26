@@ -6,8 +6,8 @@ export declare class RolesGrpcConverterV1 {
     static toError(obj: any): any;
     static setMap(map: any, values: any): void;
     static getMap(map: any): any;
-    private static toJson;
-    private static fromJson;
+    private static toJson(value);
+    private static fromJson(value);
     static fromPagingParams(paging: PagingParams): any;
     static toPagingParams(obj: any): PagingParams;
     static fromUserRoles(userRoles: UserRolesV1): any;
