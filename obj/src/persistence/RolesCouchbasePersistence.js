@@ -5,7 +5,7 @@ const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_couchbase_node_1 = require("pip-services3-couchbase-node");
 class RolesCouchbasePersistence extends pip_services3_couchbase_node_1.IdentifiableCouchbasePersistence {
     constructor() {
-        super('roles');
+        super('users', 'roles');
     }
     composeFilter(filter) {
         filter = filter || new pip_services3_commons_node_1.FilterParams();

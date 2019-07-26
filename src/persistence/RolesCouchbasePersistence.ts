@@ -15,7 +15,7 @@ export class RolesCouchbasePersistence
     implements IRolesPersistence {
 
     constructor() {
-        super('roles');
+        super('users', 'roles');
     }
 
     private composeFilter(filter: FilterParams) {
