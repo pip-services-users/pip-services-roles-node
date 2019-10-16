@@ -85,6 +85,6 @@ class RolesController {
         });
     }
 }
-RolesController._defaultConfig = pip_services3_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0');
 exports.RolesController = RolesController;
+RolesController._defaultConfig = pip_services3_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-roles:persistence:*:*:1.0');
 //# sourceMappingURL=RolesController.js.map
