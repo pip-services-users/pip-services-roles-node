@@ -3,18 +3,17 @@ let _ = require('lodash');
 import { FilterParams } from 'pip-services3-commons-node';
 import { PagingParams } from 'pip-services3-commons-node';
 import { DataPage } from 'pip-services3-commons-node';
-import { IdentifiableMongoosePersistence } from 'pip-services3-mongoose-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
 
 import { UserRolesV1 } from '../data/version1/UserRolesV1';
 import { IRolesPersistence } from './IRolesPersistence';
-import { UserRolesMongooseSchema } from './UserRolesMongooseSchema';
 
 export class RolesMongoDbPersistence 
-    extends IdentifiableMongoosePersistence<UserRolesV1, string> 
+    extends IdentifiableMongoDbPersistence<UserRolesV1, string> 
     implements IRolesPersistence {
 
     constructor() {
-        super('user_roles', UserRolesMongooseSchema());
+        super('user_roles');
     }
 
     private composeFilter(filter: FilterParams) {

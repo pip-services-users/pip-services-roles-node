@@ -23,6 +23,7 @@ class RolesServiceFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(RolesServiceFactory.GrpcServiceDescriptor, RolesGrpcServiceV1_1.RolesGrpcServiceV1);
     }
 }
+exports.RolesServiceFactory = RolesServiceFactory;
 RolesServiceFactory.Descriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "factory", "default", "default", "1.0");
 RolesServiceFactory.MemoryPersistenceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "persistence", "memory", "*", "1.0");
 RolesServiceFactory.FilePersistenceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "persistence", "file", "*", "1.0");
@@ -32,5 +33,4 @@ RolesServiceFactory.ControllerDescriptor = new pip_services3_commons_node_1.Desc
 RolesServiceFactory.HttpServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "service", "http", "*", "1.0");
 RolesServiceFactory.CommandableGrpcServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "service", "commandable-grpc", "*", "1.0");
 RolesServiceFactory.GrpcServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-roles", "service", "grpc", "*", "1.0");
-exports.RolesServiceFactory = RolesServiceFactory;
 //# sourceMappingURL=RolesServiceFactory.js.map
